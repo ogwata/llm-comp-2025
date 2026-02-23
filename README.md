@@ -45,6 +45,11 @@
 - DPOデータセット: `u-10bei/dpo-dataset-qwen-cot`
 - 最適DPO LR: 5e-7, β=0.2
 
+## 分析ツール
+
+- [StructEval Analyzer](https://huggingface.co/spaces/ogwata/structeval-analyz) — 推論結果の分析用Webアプリ（HuggingFace Spaces）
+- [分析ノートブック](https://colab.research.google.com/drive/1b5KB_5wnTEqGZJzMW1yhPsYeCnpiclqL#scrollTo=SFd6J4YGZGt4) — Colab上の詳細分析用ノートブック
+
 ## HuggingFace
 
 モデルは [ogwata](https://huggingface.co/ogwata) で公開しています。

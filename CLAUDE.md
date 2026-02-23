@@ -35,6 +35,8 @@ Qwen2.5-7Bをベースに、SFT・DPOでfine-tuningし、JSON/YAML/TOML/XML/CSV�
 - 推論コード（標準コード2）はモデル情報以外を一切改変禁止
 - inference.jsonの編集禁止（ChatGPT/API/人手による編集すべて禁止）
 - 評価データ（public_150.json）の学習使用禁止・改変禁止
+- 評価データやその推論結果の分析をもとに、学習データを評価に適合する形で編集・加工することも禁止（間接利用もNG）
+- リーダーボードを利用したチューニングも禁止
 - LLMを用いたデータ作成（合成）は禁止
 - 商用モデルAPI（OpenAI, Anthropic, Google等）の利用禁止
 - 学習指定モデル: Qwen/Qwen2.5-7B-Instruct のみ（メインコンペ）
