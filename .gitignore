@@ -1,0 +1,37 @@
+# ===== Secrets =====
+.env
+*.env
+*token*
+secrets/
+
+# ===== Competition Data (DO NOT COMMIT) =====
+public_150.json
+inference.json
+inference_*.json
+
+# ===== Model Weights (managed on HuggingFace) =====
+*.bin
+*.safetensors
+*.gguf
+adapter_*/
+merged_model/
+output_model/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+
+# ===== IDE =====
+.vscode/
+.idea/
