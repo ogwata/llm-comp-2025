@@ -6,7 +6,7 @@
 ## プロジェクト概要
 
 松尾研LLM講義2025 メインコンペ（StructEval-T ベンチマーク）への参加。
-Qwen2.5-7Bをベースに、SFT・DPOでfine-tuningし、JSON/YAML/TOML/XML/CSVの構造化データ生成精度を競う。
+Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/TOML/XML/CSVの構造化データ生成精度を競う。
 
 ## 現在の状態（2026-02-23時点）
 
@@ -39,7 +39,7 @@ Qwen2.5-7Bをベースに、SFT・DPOでfine-tuningし、JSON/YAML/TOML/XML/CSV�
 - リーダーボードを利用したチューニングも禁止
 - LLMを用いたデータ作成（合成）は禁止
 - 商用モデルAPI（OpenAI, Anthropic, Google等）の利用禁止
-- 学習指定モデル: Qwen/Qwen2.5-7B-Instruct のみ（メインコンペ）
+- 学習指定モデル: Qwen3-4B-Instruct-2507 のみ（メインコンペ）
 - モデルはLoRAマージ済みでHuggingFaceにアップロード（アダプタ動的ロード不可）
 
 ## 判断基準（意思決定用）
