@@ -11,7 +11,7 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 ## 現在の状態（2026-02-26時点）
 
 - **ベストスコア:** SFT+DPO 0.760（exp21/exp22同等）、SFT単体 0.751（exp2）
-- **提出状況:** 23/50（残り27回）
+- **提出状況:** 24/50（残り26回）
 - **締切:** 2026/03/02 12:00
 - **残り期間:** 4日
 
@@ -26,9 +26,11 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 1. **SFTデータセット:** `u-10bei/cot_512_v2` が最良。v4, v5, daichira系はすべて劣る
 2. **daichiraデータセットは使用禁止:** tool_call汚染あり。3回検証済み（exp6, 13, 17）
 3. **SFT最適設定:** LR=5e-5, epoch=1（epoch=2は過学習）
-4. **DPO最適範囲:** LR=7e-7〜8e-7で同等（0.760）。β=0.2
+4. **DPO最適範囲:** LR=7e-7〜8e-7で同等（0.760）。β=0.2〜0.3で同等
 5. **DPO LR=1e-6は過剰:** exp12で確認済み
 6. **推論コード差異はほぼゼロ:** exp11で標準コード1=0.742, 標準コード2=0.742（実質同一）
+7. **DPOデータセット変更は効果なし:** dpo-qwen-cotもenhanced-dpo-v2も同一スコア（exp21 vs exp24）
+8. **0.760プラトー:** exp21-24すべて0.760293。LR/β/データセット変更では突破不可
 
 ## コンペルール（違反厳禁）
 
@@ -59,8 +61,9 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 2. ~~DPO LR=7e-7の探索~~ → 完了: exp21で0.760（新記録）
 3. ~~DPO LR=8e-7の探索~~ → 完了: exp22で0.760（exp21と同等）
 4. ~~DPO β=0.3の探索~~ → 完了: exp23で0.760（exp21と同等）
-5. DPO β=0.1の探索
-6. 多次元Anti-Formatting DPO
+5. ~~enhanced-dpo-v2でDPO~~ → 完了: exp24で0.760（改善なし）
+6. exp25: DPO max_length=2048（構造的制約の緩和）
+7. exp26-27: SFT r=16 → DPO（LoRAランク拡大）
 
 ## ワークフロー
 
