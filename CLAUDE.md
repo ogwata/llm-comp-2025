@@ -8,18 +8,20 @@
 松尾研LLM講義2025 メインコンペ（StructEval-T ベンチマーク）への参加。
 Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/TOML/XML/CSVの構造化データ生成精度を競う。
 
-## 現在の状態（2026-02-28時点）
+## 現在の状態（2026-03-01時点）
 
-- **ベストスコア:** SFT+DPO 0.760（exp21/exp22同等）、SFT単体 0.751（exp2）
-- **提出状況:** 26/50（残り24回）
+- **ベストスコア:** SFT+DPO 0.760（exp21）、SFT単体 0.751（exp2）
+- **提出状況:** 28/50（残り22回）
 - **締切:** 2026/03/02 12:00
-- **残り期間:** 2日
+- **残り期間:** 1.5日
+- **採用戦略:** Task Arithmetic統合（docs/llm_strategy_final_10_revised-2.md）
 
 ## 重要ファイル
 
-- `docs/実験結果一覧_exp1-19.md` → 全19実験の設定とスコア
+- `docs/実験結果一覧.md` → 全実験の設定とスコア（exp1-27）
 - `docs/レトロスペクション_exp1-19.md` → 詳細な分析と教訓
 - `docs/判断基準.md` → 意思決定ルール
+- `docs/llm_strategy_final_10_revised-2.md` → 採用済み最終戦略（Task Arithmetic）
 
 ## 確立済みの知見（繰り返し確認不要）
 
@@ -32,7 +34,8 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 7. **DPOデータセット変更は効果なし:** dpo-qwen-cotもenhanced-dpo-v2も同一スコア（exp21 vs exp24）
 8. **0.760プラトー:** exp21-24すべて0.760293。LR/β/データセット変更では突破不可
 9. **max_length=2048は逆効果:** exp25で0.739に悪化。max_length=1024が最適
-10. **LoRA r=16は容量不足:** exp26で0.636に大幅悪化。r=64が最適（r=16→exp27中止）
+10. **LoRA r=16は完全に行き止まり:** exp26(SFT)=0.636、exp27(SFT+DPO)=0.609。DPOでも回復不可
+11. **マージモデルの推論時はMODEL_SOURCE="merged"を使用:** adapter_mergeではなくmergedモードで推論
 
 ## コンペルール（違反厳禁）
 
@@ -59,14 +62,11 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 
 ## 次の優先アクション
 
-1. ~~exp11を標準コード2で推論（1提出）~~ → 完了: 0.742
-2. ~~DPO LR=7e-7の探索~~ → 完了: exp21で0.760（新記録）
-3. ~~DPO LR=8e-7の探索~~ → 完了: exp22で0.760（exp21と同等）
-4. ~~DPO β=0.3の探索~~ → 完了: exp23で0.760（exp21と同等）
-5. ~~enhanced-dpo-v2でDPO~~ → 完了: exp24で0.760（改善なし）
-6. ~~exp25: DPO max_length=2048~~ → 完了: 0.739（逆効果）
-7. ~~exp26: SFT r=16~~ → 完了: 0.636（r=16は容量不足で大幅悪化。exp27中止）
-8. 次の戦略を検討中
+1. ~~exp26: SFT r=16~~ → 完了: 0.636（r=16は容量不足）
+2. ~~exp27: r=16 SFT+DPO~~ → 完了: 0.609（DPOでも回復不可。r=16は行き止まり）
+3. **exp29: DPO epoch=2（exp21ベース）** → ノートブック準備済み。Colabで実行待ち
+4. exp30-37: Task Arithmetic統合探索（exp29完了後）
+5. mergekitノートブック作成（exp29実行中に並行して準備）
 
 ## ワークフロー
 
