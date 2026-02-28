@@ -11,10 +11,10 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 ## 現在の状態（2026-03-01時点）
 
 - **ベストスコア:** SFT+DPO 0.760（exp21）、SFT単体 0.751（exp2）
-- **提出状況:** 28/50（残り22回）
+- **提出状況:** 29/50（残り21回）
 - **締切:** 2026/03/02 12:00
 - **残り期間:** 1.5日
-- **採用戦略:** Task Arithmetic統合（docs/llm_strategy_final_10_revised-2.md）
+- **採用戦略:** rsLoRA + 大ランク + 長コンテキストによるSFT改善（Slack情報に基づく方針転換）
 
 ## 重要ファイル
 
@@ -36,6 +36,7 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 9. **max_length=2048は逆効果:** exp25で0.739に悪化。max_length=1024が最適
 10. **LoRA r=16は完全に行き止まり:** exp26(SFT)=0.636、exp27(SFT+DPO)=0.609。DPOでも回復不可
 11. **マージモデルの推論時はMODEL_SOURCE="merged"を使用:** adapter_mergeではなくmergedモードで推論
+12. **DPO epoch=2は逆効果:** exp29で0.738。JSON26%に壊滅（markdown_block大量混入）。epoch=1が最適
 
 ## コンペルール（違反厳禁）
 
@@ -62,11 +63,9 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 
 ## 次の優先アクション
 
-1. ~~exp26: SFT r=16~~ → 完了: 0.636（r=16は容量不足）
-2. ~~exp27: r=16 SFT+DPO~~ → 完了: 0.609（DPOでも回復不可。r=16は行き止まり）
-3. **exp29: DPO epoch=2（exp21ベース）** → ノートブック準備済み。Colabで実行待ち
-4. exp30-37: Task Arithmetic統合探索（exp29完了後）
-5. mergekitノートブック作成（exp29実行中に並行して準備）
+1. ~~exp26-29: Task Arithmetic戦略~~ → 失敗。部品モデルが全て崩壊
+2. **exp30: rsLoRA + r=128 + MAX_SEQ_LEN=1024 + 正則化強化** → ノートブック準備済み。L4 GPUで実行
+3. exp30の結果に応じてパラメータ微調整（LR, dropout, weight_decay）
 
 ## ワークフロー
 
