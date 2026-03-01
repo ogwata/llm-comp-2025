@@ -11,7 +11,7 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 ## 現在の状態（2026-03-01時点）
 
 - **ベストスコア:** SFT+DPO 0.760（exp21）、SFT単体 0.751（exp2）
-- **提出状況:** 29/50（残り21回）
+- **提出状況:** 30/50（残り20回）
 - **締切:** 2026/03/02 12:00
 - **残り期間:** 1.5日
 - **採用戦略:** rsLoRA + 大ランク + 長コンテキストによるSFT改善（Slack情報に基づく方針転換）
@@ -37,6 +37,7 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 10. **LoRA r=16は完全に行き止まり:** exp26(SFT)=0.636、exp27(SFT+DPO)=0.609。DPOでも回復不可
 11. **マージモデルの推論時はMODEL_SOURCE="merged"を使用:** adapter_mergeではなくmergedモードで推論
 12. **DPO epoch=2は逆効果:** exp29で0.738。JSON26%に壊滅（markdown_block大量混入）。epoch=1が最適
+13. **rsLoRA+r128+低LRは逆効果:** exp30で0.625。JSON100%/YAML97%に改善もTOML28%崩壊。LR=2e-5が低すぎた可能性大
 
 ## コンペルール（違反厳禁）
 
@@ -64,8 +65,9 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 ## 次の優先アクション
 
 1. ~~exp26-29: Task Arithmetic戦略~~ → 失敗。部品モデルが全て崩壊
-2. **exp30: rsLoRA + r=128 + MAX_SEQ_LEN=1024 + 正則化強化** → ノートブック準備済み。L4 GPUで実行
-3. exp30の結果に応じてパラメータ微調整（LR, dropout, weight_decay）
+2. ~~exp30: rsLoRA + r=128 + SEQ1024 + 正則化強化~~ → 0.625。JSON/YAML改善もTOML崩壊
+3. **exp31: rsLoRA+r128+SEQ1024を維持、LR=5e-5・dropout=0・wd=0.05に復元** → exp2実績のあるLR/正則化とrsLoRAの組み合わせを検証
+4. exp31の結果に応じてdropout/weight_decayを段階的に追加
 
 ## ワークフロー
 
