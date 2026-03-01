@@ -18,10 +18,11 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 
 ## 重要ファイル
 
-- `docs/実験結果一覧.md` → 全実験の設定とスコア（exp1-27）
+- `docs/実験結果一覧.md` → 全実験の設定とスコア（exp1-31）
+- `docs/exp32_plan.md` → exp32以降の段階的計画（現行戦略）
+- `docs/0.8越えの投稿.md` → Slack投稿者の0.8+達成ノウハウ
 - `docs/レトロスペクション_exp1-19.md` → 詳細な分析と教訓
 - `docs/判断基準.md` → 意思決定ルール
-- `docs/llm_strategy_final_10_revised-2.md` → 採用済み最終戦略（Task Arithmetic）
 
 ## 確立済みの知見（繰り返し確認不要）
 
@@ -65,10 +66,11 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 ## 次の優先アクション
 
 1. ~~exp26-29: Task Arithmetic戦略~~ → 失敗。部品モデルが全て崩壊
-2. ~~exp30: rsLoRA + r=128 + SEQ1024 + 正則化強化~~ → 0.625。TOML崩壊
-3. ~~exp31: rsLoRA+r128+SEQ1024、LR=5e-5に復元~~ → 0.572。CSV壊滅。rsLoRA路線断念
-4. **exp32: exp2設定 + SEQ_LEN=1024のみ変更** → 長コンテキストだけの効果を最小変更で検証
-5. exp32の結果に応じてDPO改善に集中（exp2ベースSFT+DPOで0.760超えを狙う）
+2. ~~exp30-31: rsLoRA+r128路線~~ → 2連敗で断念（スケーリング過大）
+3. **exp32: exp2 + SEQ_LEN=1024のみ**（詳細は `docs/exp32_plan.md`）
+4. exp32結果で分岐 → grad_accum増/dropout追加/LR微調整を段階的に検証
+5. SFT改善後、最良モデルでDPO（LR=7e-7, β=0.2）→ 0.760超え目標
+6. 原則: 1回1〜2変数変更。0.751未満は即棄却
 
 ## ワークフロー
 
