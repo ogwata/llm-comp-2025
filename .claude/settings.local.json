@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pdftoppm -png -f 16 -l 25 -r 200 \"/Users/ogwata/dev/ogwata/llm-comp-2025/LLM講義2025_最終課題_詳細資料_受講生公開用.pdf\" /tmp/llm_page3)"
+    ]
+  }
+}
