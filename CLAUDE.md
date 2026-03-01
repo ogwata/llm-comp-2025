@@ -11,14 +11,14 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 ## 現在の状態（2026-03-01時点）
 
 - **ベストスコア:** SFT+DPO 0.760（exp21）、SFT単体 0.751（exp2）
-- **提出状況:** 32/50（残り18回）
+- **提出状況:** 33/50（残り17回）
 - **締切:** 2026/03/02 12:00
-- **残り期間:** 約20時間
-- **採用戦略:** SEQ1024+フルレシピ（低LR+dropout+大ga）で最後の挑戦
+- **残り期間:** 約18時間
+- **採用戦略:** SEQ1024+フルレシピのLR探索（exp33=0.690で方向性確認済み、LR=2e-5→1.5e-5を探索）
 
 ## 重要ファイル
 
-- `docs/実験結果一覧.md` → 全実験の設定とスコア（exp1-31）
+- `docs/実験結果一覧.md` → 全実験の設定とスコア（exp1-33）
 - `docs/exp32_plan.md` → exp32以降の段階的計画（現行戦略）
 - `docs/0.8越えの投稿.md` → Slack投稿者の0.8+達成ノウハウ
 - `docs/レトロスペクション_exp1-19.md` → 詳細な分析と教訓
@@ -40,6 +40,7 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 12. **DPO epoch=2は逆効果:** exp29で0.738。JSON26%に壊滅（markdown_block大量混入）。epoch=1が最適
 13. **rsLoRA+r128は路線として失敗:** exp30(LR=2e-5)=0.625でTOML崩壊、exp31(LR=5e-5)=0.572でCSV壊滅。rsLoRAのスケーリング(α/√r=11.3)が標準LoRA(α/r=2.0)の5.6倍となり、どのLRでも不安定
 14. **SEQ_LEN=1024単独は逆効果:** exp32で0.621。JSON/YAML100%だがTOML12%壊滅。正則化なしのSEQ1024はTOML/XML/CSVを破壊。投稿者は「SEQ1024+低LR+dropout+大ga」の組み合わせで0.8+達成
+15. **フルレシピ（SEQ1024+低LR+dropout+ga16）は方向性正しい:** exp33で0.690。TOML64%回復（exp32の12%から大幅改善）。JSON/YAML100%維持。LRをさらに下げることで改善の余地あり
 
 ## コンペルール（違反厳禁）
 
@@ -68,9 +69,10 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 
 1. ~~exp26-29: Task Arithmetic戦略~~ → 失敗
 2. ~~exp30-31: rsLoRA+r128路線~~ → 2連敗で断念
-3. ~~exp32: exp2 + SEQ_LEN=1024のみ~~ → 0.621。TOML12%壊滅。正則化なしでは逆効果
-4. **exp33: SEQ1024 + LR=3e-5 + dropout=0.05 + ga=16**（Slack投稿者フルレシピ。最後のSEQ1024挑戦）
-5. exp33失敗時 → SEQ1024路線完全断念、exp2ベースDPO微調整に集中
+3. ~~exp32: exp2 + SEQ_LEN=1024のみ~~ → 0.621。TOML12%壊滅
+4. ~~exp33: SEQ1024 + LR=3e-5 + dropout=0.05 + ga=16~~ → 0.690。TOML64%回復、方向性正しいがexp2未到達
+5. **exp34: LR=2e-5に下げる**（exp33からLRのみ変更。TOML改善を狙う）
+6. 0.751超えたら即DPO（LR=7e-7, β=0.2）→ 0.760超え狙い
 
 ## ワークフロー
 
