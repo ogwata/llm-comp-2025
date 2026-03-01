@@ -11,14 +11,14 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 ## 現在の状態（2026-03-02時点）
 
 - **ベストスコア:** SFT単体 0.790（exp40）★新記録！wd=0.1で+0.011
-- **提出状況:** 42/50（残り8回）
+- **提出状況:** 43/50（残り7回）
 - **締切:** 2026/03/02 12:00
-- **残り期間:** 約5時間
-- **採用戦略:** alpha=64失敗。warmup_ratio / lr_scheduler / DPO on exp40で0.8突破を狙う
+- **残り期間:** 約4時間
+- **最終スコア:** 0.790（exp40）。DPO(exp43)は0.761で悪化。exp40が最終ベスト
 
 ## 重要ファイル
 
-- `docs/実験結果一覧.md` → 全実験の設定とスコア（exp1-42）
+- `docs/実験結果一覧.md` → 全実験の設定とスコア（exp1-43）
 - `docs/exp32_plan.md` → exp32以降の段階的計画（現行戦略）
 - `docs/0.8越えの投稿.md` → Slack投稿者の0.8+達成ノウハウ
 - `docs/レトロスペクション_exp1-19.md` → 詳細な分析と教訓
@@ -51,6 +51,7 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 23. **weight_decay=0.1で新記録0.790:** exp40で全フォーマット改善or維持（TOML68→72%、YAML82.9→85.7%、CSV95%維持）。Rate87.3%。正則化強化の方向性が正しいことを確認
 24. **wd=0.15は過剰で悪化:** exp41で0.781。TOML72→68%に後退。wd=0.1がスイートスポット（0.05→改善、0.15→悪化の山型）
 25. **LoRA alpha=64は介入不足で大幅悪化:** exp42で0.719。全フォーマット悪化（TOML24%/XML35%壊滅）。scaling=1.0ではアダプタが弱すぎ。alpha=128（scaling=2.0）が最適
+26. **DPO on exp40は逆効果:** exp43で0.761。JSON98→88%、TOML72→60%に悪化（XML85%のみ改善）。exp40のSFT最適化が高度すぎてDPOが崩す
 
 ## コンペルール（違反厳禁）
 
@@ -90,7 +91,7 @@ Qwen3-4B-Instruct-2507をベースに、SFT・DPOでfine-tuningし、JSON/YAML/T
 11. ~~exp40: weight_decay=0.1~~ → **0.790 新記録!** 全フォーマット改善or維持。wd方向が有効と確定
 12. ~~exp41: wd=0.15~~ → 0.781。TOML後退。wd=0.1がスイートスポットと確定
 13. ~~exp42: LoRA alpha=64~~ → 0.719。scaling=1.0は介入不足。alpha=128が最適
-14. **exp43以降の候補:** warmup_ratio変更 / lr_scheduler変更 / DPO on exp40
+14. ~~exp43: DPO on exp40~~ → 0.761。DPOは逆効果。exp40(0.790)が最終ベスト
 
 ## ワークフロー
 
